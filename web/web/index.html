@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+        <link rel="stylesheet" href="./bootstrap.4.3.1/css/bootstrap.css" >
+        <script src="./jquery.js"></script>
+        <script src="./socket.io.js"></script>
+        <script src="./bootstrap.4.3.1/js/bootstrap.js" ></script>
+    </head>
+    <body>
+        <div class="container">
+            <div id="online_box" class="alert alert-primary" role="alert">
+            </div>
+            <div class="notification sticky hide">
+                <div id="content" class="alert alert-default" role="alert">
+                </div>
+            </div>
+            <div class="wrapper" >
+                <div>
+                    <h3>介绍</h3>
+                    Yii-Workerman 是一个web消息推送系统，基于
+                    <a href="https://github.com/yiisoft/yii2-app-basic" target="_blank">Yii</a>
+                    和
+                    <a href="https://github.com/walkor/phpsocket.io" target="_blank">PHPSocket.IO</a>
+                    开发。
+                    <br>
+                    <br>
+                    <h3>支持以下特性</h3>
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" >多浏览器支持</a>
+                        <a class="list-group-item list-group-item-action" >支持针对单个用户推送消息</a>
+                        <a class="list-group-item list-group-item-action" >支持向所有用户推送消息</a>
+                        <a class="list-group-item list-group-item-action" >长连接推送（websocket或者comet），消息即时到达</a>
+                    </div>
+                    <br>
+                    <h3>测试</h3>
+                    <button id="button" type="button" class="btn btn-primary">
+                        点击(向所有用户发送消息=》“你好，我是Yii-Workerman”)
+                    </button>
+                    <button id="button1" type="button" class="btn btn-primary">
+                        点击(向用户1发送消息=》“你好，我是Yii-Workerman”)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        domain = "192.168.0.171";
+        uid = 1;
+        $(document).ready(function () {
+            // 连接服务端
+            var socket = io('http://' + domain + ':2120');
+            // 连接后登录
+            socket.on('connect', function(){
+                socket.emit('login', uid);
+            });
+            // 后端推送来消息时
+            socket.on('new_msg', function(msg){
+                $("#content").removeClass("alert-default").addClass("alert-primary").html('收到消息：'+msg);
+            });
+            // 后端推送来在线数据时
+            socket.on('update_online_count', function(online_stat){
+                $('#online_box').html(online_stat);
+            });
+        });
+        $("#content").click(function () {
+            $("#content").removeClass("alert-primary").addClass("alert-default").html('');
+        });
+        $("#button").click(function () {
+            $.ajax({
+                url:"/index.php?r=content/test", //请求的服务端地址
+                data:{
+                    content:"你好，我是Yii-Workerman"
+                },
+                type:"post",
+                dataType:"json",
+                success:function(data){
+                },
+                error:function(error){
+                    console.log(error)
+                }
+            });
+        });
+        $("#button1").click(function () {
+            $.ajax({
+                url:"/index.php?r=content/test", //请求的服务端地址
+                data:{
+                    content:"你好，我是Yii-Workerman，发给1",
+                    to:1
+                },
+                type:"post",
+                dataType:"json",
+                success:function(data){
+                },
+                error:function(error){
+                    console.log(error)
+                }
+            });
+        });
+    </script>
+</html>
