@@ -7,3 +7,9 @@
 </p>
 
 Yii2-workerman framework is based on [Yii2](http://www.yiiframework.com/) and [PHPSocket.IO](https://github.com/walkor/phpsocket.io) do secondary development
+
+可以在window和linux系统下运行
+window
+    php yii web-socket/test start
+linux
+    运行 webSocketRun.sh    
