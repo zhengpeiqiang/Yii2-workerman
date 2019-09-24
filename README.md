@@ -6,10 +6,21 @@
     <br>
 </p>
 
-Yii2-workerman framework is based on [Yii2](http://www.yiiframework.com/) and [PHPSocket.IO](https://github.com/walkor/phpsocket.io) do secondary development
+Yii2-workerman框架是基于 [Yii2](http://www.yiiframework.com/) 和 [PHPSocket.IO](https://github.com/walkor/phpsocket.io) 做的二次开发
+    
+后端服务启动停止
+======
+## Linux系统
+### 启动服务
+运行 webSocketRun.sh
+### 停止服务
+php ./yii web-socket/test stop
+### 服务状态
+php ./yii web-socket/test status
 
-可以在window和linux系统下运行
-window
-    php yii web-socket/test start
-linux
-    运行 webSocketRun.sh    
+## windows系统
+php yii web-socket/test start
+
+前端访问目录
+======
+/web/web/index.html
